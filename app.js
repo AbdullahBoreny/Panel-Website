@@ -1,16 +1,15 @@
+// app.js
 const express = require("express");
-const path = require("path");
-
 const app = express();
-app.get("/", (req, res) => {
-  console.log("index is !");
+const authorRouter = require("./routes/authorRouter");
+const bookRouter = require("./routes/bookRouter")
+const indexRouter = require("./routes/indexRouter");
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/authors", authorRouter);
+app.use("/books", bookRouter);
+app.use("/", indexRouter);
 
-  res.send("Hello, world!");
-});
-app.get("/about", (req, res) => {
-  console.log("about is requested!");
-  res.sendFile(path.join(process.cwd(), "index.html"));
-});
 const PORT = 3000;
 app.listen(PORT, (error) => {
   if (error) {
