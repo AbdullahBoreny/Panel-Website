@@ -80,9 +80,7 @@ function App() {
 
         {response && (
           <div className="response">
-            <p><strong>{response.message}</strong></p>
-            <p>Name: {response.received.name}</p>
-            <p>Email: {response.received.email}</p>
+          <div>thanks for submitting</div>
           </div>
         )}
       </section>
