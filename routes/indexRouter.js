@@ -11,8 +11,6 @@ indexRouter.get('/about',(req,res) => {
 indexRouter.post('/form', (req,res) => {
     const data = req.body;
     console.log("Recived data: " , data);
-    res.json(data)
-
-    res.end();
+    res.render("info", { formData: data });
 })
 module.exports = indexRouter;
