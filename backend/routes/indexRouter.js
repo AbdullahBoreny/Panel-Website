@@ -1,20 +1,19 @@
-const {Router} = require("express");
-const path = require('path')
+const { Router } = require("express");
 const indexRouter = Router();
 
-indexRouter.get("/",(req,res) => {
-    res.sendFile(path.join(process.cwd(), './public/index.html'))
-})
-indexRouter.get('/about',(req,res) => {
-    res.send("about");
-})
+// POST form submission
 indexRouter.post("/form", (req, res) => {
-  const data = req.body;
-  console.log("Received data:", data);
+  const { name, email } = req.body;
+  if (!name || !email) {
+    return res.status(400).json({ status: "fail", message: "Name and email required" });
+  }
 
-  res.json({
+  // Simulate saving data...
+  res.status(201).json({
+    status: "success",
     message: "Form submitted successfully!",
-    received: data,
+    received: { name, email }
   });
 });
+
 module.exports = indexRouter;
