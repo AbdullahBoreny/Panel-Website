@@ -1,35 +1,19 @@
 const { Router } = require("express");
 const authorRouter = Router();
 
-// In-memory data (replace with DB in real apps)
 let authors = [
-  { id: 1, name: "Author 1" },
-  { id: 2, name: "Author 2" }
+  { id: 1, name: "Mohammad" },
+  { id: 2, name: "Abdullah" },
 ];
 
-// GET all authors
 authorRouter.get("/", (req, res) => {
-  res.json({
-    status: "success",
-    count: authors.length,
-    data: authors
-  });
+  res.json(authors); 
 });
 
-// POST new author
 authorRouter.post("/", (req, res) => {
-  const { name } = req.body;
-  if (!name) {
-    return res.status(400).json({ status: "fail", message: "Name is required" });
-  }
-
-  const newAuthor = { id: authors.length + 1, name };
+  const newAuthor = { id: authors.length + 1, ...req.body };
   authors.push(newAuthor);
-
-  res.status(201).json({
-    status: "success",
-    data: newAuthor
-  });
+  res.json({ message: "Author added!", author: newAuthor });
 });
 
 module.exports = authorRouter;

@@ -2,33 +2,18 @@ const { Router } = require("express");
 const bookRouter = Router();
 
 let books = [
-  { id: 1, title: "Book 1" },
-  { id: 2, title: "Book 2" }
+  { id: 1, title: "Pride and Prejudice" },
+  { id: 2, title: "To Kill a Mockingbird" },
 ];
 
-// GET all books
 bookRouter.get("/", (req, res) => {
-  res.json({
-    status: "success",
-    count: books.length,
-    data: books
-  });
+  res.json(books); 
 });
 
-// POST new book
 bookRouter.post("/", (req, res) => {
-  const { title } = req.body;
-  if (!title) {
-    return res.status(400).json({ status: "fail", message: "Title is required" });
-  }
-
-  const newBook = { id: books.length + 1, title };
+  const newBook = { id: books.length + 1, ...req.body };
   books.push(newBook);
-
-  res.status(201).json({
-    status: "success",
-    data: newBook
-  });
+  res.json({ message: "Book added!", book: newBook });
 });
 
 module.exports = bookRouter;
