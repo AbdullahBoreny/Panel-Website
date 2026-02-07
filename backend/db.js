@@ -19,11 +19,11 @@ async function getAuthorById(authorId) {
   return authors.find(author => author.id === authorId);
 };
 async function getAuthors() {
-  return authors
+  return authors;
 }
 
 async function getBooks() {
-  return books
+  return books;
 }
 
 module.exports = { getBooks,getAuthorById,getAuthors, getBookById };

@@ -14,7 +14,7 @@ async function getAuthorById(req, res) {
     return;
   }
 
-  res.send(`Author Name: ${author.name}`);
+  res.send(author)
 }
 async function getAuthors(req, res) {
   const authors = await db.getAuthors();
@@ -28,7 +28,14 @@ async function getAuthors(req, res) {
     .join("\n");
   console.log(response);
 
-  res.send(response);
+res.send(authors);
 }
 
-module.exports = { getAuthorById, getAuthors };
+async function postAuthors(req, res) {
+  const authors = await db.getAuthors();
+  const newAuthor = { id: authors.length + 1, ...req.body };
+  authors.push(newAuthor);
+  res.json({ message: "authors added!", author: newAuthor });
+}
+
+module.exports = { getAuthorById, getAuthors, postAuthors };

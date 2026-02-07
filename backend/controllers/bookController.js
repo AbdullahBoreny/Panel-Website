@@ -14,7 +14,7 @@ async function getBookById(req, res) {
     return;
   }
 
-  res.send(`Book Title: ${book.title}`);
+  res.json(book);
 }
 async function getBooks(req, res) {
   const book = await db.getBooks();
@@ -23,9 +23,17 @@ async function getBooks(req, res) {
     res.status(404).send("book not found");
     return;
   }
-  const response = book.map((book) => `Book Title: ${book.title}, Book Id: ${book.id}`).join("<br>");
+  const response = book
+    .map((book) => `Book Title: ${book.title}, Book Id: ${book.id}`)
+    .join("<br>");
 
-  res.send(response);
+  res.json(book);
 }
+async function postBooks(req, res) {
+  const books = await db.getBooks();
 
-module.exports = { getBooks, getBookById };
+  const newBook = { id: books.length + 1, ...req.body };
+  books.push(newBook);
+  res.json({ message: "Book added!", book: newBook });
+}
+module.exports = { getBooks, getBookById, postBooks };
