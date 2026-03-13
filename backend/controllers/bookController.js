@@ -1,4 +1,3 @@
-// controllers/authorController.js
 
 // eslint-disable-next-line no-undef
 const db = require("../db");
