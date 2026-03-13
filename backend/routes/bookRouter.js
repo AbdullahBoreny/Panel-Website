@@ -6,8 +6,9 @@ let books = [
   { id: 2, title: "To Kill a Mockingbird" },
 ];
 bookRouter.get("/:bookId",getBookById);
-bookRouter.get("/",getBooks);
-bookRouter.post("/",postBooks);
+bookRouter.route("/")
+.get(getBooks)
+.post(postBooks)
 
 
 module.exports = bookRouter;

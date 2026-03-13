@@ -10,7 +10,6 @@ indexRouter.get("/", (req, res) => {
 indexRouter.get("/about", (req, res) => {
   res.send("about");
 });
-//TODO: make a user objects in db.js and modify it when someone sends data
 indexRouter.get("/users", getUsers);
 indexRouter.get("/users/:userId",getUserById);
 indexRouter.post("/users",postUser);
