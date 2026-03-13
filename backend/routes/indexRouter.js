@@ -1,24 +1,17 @@
-const {Router} = require("express");
-const path = require('path')
+const { Router } = require("express");
+const path = require("path");
 const indexRouter = Router();
-const rateLimit = require("express-rate-limit");
 
+const { getUsers,getUserById, postUser } = require("../controllers/indexController");
 
-
-indexRouter.get("/",(req,res) => {
-    res.sendFile(path.join(process.cwd(), './public/index.html'))
-})
-indexRouter.get('/about',(req,res) => {
-    res.send("about");
-})
-indexRouter.post("/form", (req, res) => {
-  const data = req.body;
-  console.log("Received data:", data);
-
-  res.json({
-    message: "Form submitted successfully!",
-    received: data,
-   
-  });
+indexRouter.get("/", (req, res) => {
+  res.sendFile(path.join(process.cwd(), "./public/index.html"));
 });
+indexRouter.get("/about", (req, res) => {
+  res.send("about");
+});
+//TODO: make a user objects in db.js and modify it when someone sends data
+indexRouter.get("/users", getUsers);
+indexRouter.get("/users/:userId",getUserById);
+indexRouter.post("/users",postUser);
 module.exports = indexRouter;
