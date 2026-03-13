@@ -1,6 +1,6 @@
 const CustomNotFoundError = require("../errors/CustomNotFoundError");
 // eslint-disable-next-line no-undef
-const db = require("../db/db");
+const db = require("../db/authDb");
 
 async function getAuthorById(req, res) {
   const { authorId } = req.params;

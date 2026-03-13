@@ -1,16 +1,20 @@
 const { Router } = require("express");
 const path = require("path");
-const indexRouter = Router();
+const userRouter = Router();
 
-const { getUsers,getUserById, postUser } = require("../controllers/indexController");
+const {
+  getUsers,
+  getUserById,
+  postUser,
+} = require("../controllers/userController");
 
-indexRouter.get("/", (req, res) => {
+userRouter.get("/", (req, res) => {
   res.sendFile(path.join(process.cwd(), "./public/index.html"));
 });
-indexRouter.get("/about", (req, res) => {
+userRouter.get("/about", (req, res) => {
   res.send("about");
 });
-indexRouter.get("/users", getUsers);
-indexRouter.get("/users/:userId",getUserById);
-indexRouter.post("/users",postUser);
-module.exports = indexRouter;
+userRouter.get("/users", getUsers);
+userRouter.get("/users/:userId", getUserById);
+userRouter.post("/users", postUser);
+module.exports = userRouter;

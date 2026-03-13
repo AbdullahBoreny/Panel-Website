@@ -1,10 +1,5 @@
 const pool = require("./pool");
 
-const authors = [
-  { id: 1, name: "Bryan" },
-  { id: 2, name: "Christian" },
-  { id: 3, name: "Jason" },
-];
 
 async function getUsers() {
   const result = await pool.query("SELECT * FROM users");
@@ -27,17 +22,9 @@ async function getUserById(userId) {
 
   return rows[0];
 }
-async function getAuthorById(authorId) {
-  return authors.find((author) => author.id === authorId);
-}
-async function getAuthors() {
-  return authors;
-}
 
 module.exports = {
-  getAuthors,
   getUsers,
-  getAuthorById,
   getUserById,
   insertUser,
 };
