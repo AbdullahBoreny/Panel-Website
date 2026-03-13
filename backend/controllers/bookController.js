@@ -1,6 +1,6 @@
-
+const CustomNotFoundError = require("../errors/CustomNotFoundError");
 // eslint-disable-next-line no-undef
-const db = require("../db");
+const db = require("../db/db");
 
 async function getBookById(req, res) {
   const { bookId } = req.params;
@@ -9,24 +9,20 @@ async function getBookById(req, res) {
   console.log(book);
 
   if (!book) {
-    res.status(404).send("Book not found");
-    return;
+    res.send(`book not found`);
+    throw new CustomNotFoundError("BOOK NOT FOUND");
   }
 
   res.json(book);
 }
 async function getBooks(req, res) {
-  const book = await db.getBooks();
-  console.log(book);
-  if (!book) {
-    res.status(404).send("book not found");
-    return;
+  const books = await db.getBooks();
+  console.log(books);
+  if (!books) {
+    throw new CustomNotFoundError(`BOOKS not found`);
   }
-  const response = book
-    .map((book) => `Book Title: ${book.title}, Book Id: ${book.id}`)
-    .join("<br>");
 
-  res.json(book);
+  res.json(books);
 }
 async function postBooks(req, res) {
   const books = await db.getBooks();
