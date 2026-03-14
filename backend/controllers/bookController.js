@@ -1,34 +1,37 @@
 const CustomNotFoundError = require("../errors/CustomNotFoundError");
-// eslint-disable-next-line no-undef
-const db = require("../db/bookdb");
+const bookRepo = require("../repositories/bookRepository");
 
-async function getBookById(req, res) {
-  const { bookId } = req.params;
+async function getBookById(req, res, next) { // Add next here
+  try {
+    const { bookId } = req.params;
+    const book = await bookRepo.getById(Number(bookId));
 
-  const book = await db.getBookById(Number(bookId));
-  console.log(book);
+    if (!book) {
+      throw new CustomNotFoundError("BOOK NOT FOUND");
+    }
 
-  if (!book) {
-    res.send(`book not found`);
-    throw new CustomNotFoundError("BOOK NOT FOUND");
+    res.json(book);
+  } catch (err) {
+    next(err); // This "pushes" the error to your app.use((err, req, res, next)...)
   }
-
-  res.json(book);
 }
 async function getBooks(req, res) {
-  const books = await db.getBooks();
-  console.log(books);
-  if (!books) {
+  const books = await bookRepo.getAll();
+
+  if (!books || books.length === 0) {
     throw new CustomNotFoundError(`BOOKS not found`);
   }
 
   res.json(books);
 }
-async function postBooks(req, res) {
-  const books = await db.getBooks();
 
-  const newBook = { id: books.length + 1, ...req.body };
-  books.push(newBook);
-  res.json({ message: "Book added!", book: newBook });
+async function postBooks(req, res) {
+  const newBook = await bookRepo.create(req.body);
+
+  res.status(201).json({
+    message: "Book added!",
+    book: newBook,
+  });
 }
+
 module.exports = { getBooks, getBookById, postBooks };
