@@ -16,21 +16,28 @@ async function getUserById(req, res) {
 }
 
 async function getUsers(req, res) {
+  const { name } = req.query;
+
+  if (name) {
+    const user = await db.getUserByName(name);
+    return res.json(user);
+  }
+
   const users = await db.getUsers();
-  console.log(users);
 
   if (!users) {
-    res.status(400).send("not found");
-    return;
+    return res.status(404).send("not found");
   }
+
   res.json(users);
 }
+
 async function postUser(req, res) {
   const users = await db.getUsers();
   const newUser = { ...req.body };
   await db.insertUser(newUser);
   console.log(newUser);
-  
+
   res.json({ user: newUser });
 }
 module.exports = { postUser, getUsers, getUserById };
