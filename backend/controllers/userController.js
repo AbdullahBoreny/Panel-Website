@@ -1,42 +1,33 @@
-// eslint-disable-next-line no-undef
-const db = require("../db/db");
+const db = require("../db/userdb");
+const userRepo = require("../repositories/userRepo");
 const CustomNotFoundError = require("../errors/CustomNotFoundError");
 
 async function getUserById(req, res) {
   const { userId } = req.params;
 
-  const user = await db.getUserById(Number(userId));
+  const user = await userRepo.getUserById(Number(userId));
 
-  if (!user) {
-    throw new CustomNotFoundError("user not found");
-  }
-
-  console.log(user);
-  res.send(user);
+  res.json(user);
 }
 
 async function getUsers(req, res) {
-  const { name } = req.query;
+  const { name } = req.params;
 
   if (name) {
-    const user = await db.getUserByName(name);
-    return res.json(user);
+    const user = await userRepo.getUserByName(name);
+    if (!user) {
+      return res.status(404).json({ message: "no name here" });
+    }
   }
 
-  const users = await db.getUsers();
-
-  if (!users) {
-    return res.status(404).send("not found");
-  }
+  const users = await userRepo.getAll();
 
   res.json(users);
 }
 
 async function postUser(req, res) {
-  const users = await db.getUsers();
   const newUser = { ...req.body };
-  await db.insertUser(newUser);
-  console.log(newUser);
+  await userRepo.create(newUser);
 
   res.json({ user: newUser });
 }
