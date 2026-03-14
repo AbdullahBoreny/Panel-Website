@@ -1,6 +1,5 @@
 const pool = require("./pool");
 
-
 async function getUsers() {
   const result = await pool.query("SELECT * FROM users");
   console.log(result.rows);
@@ -22,9 +21,16 @@ async function getUserById(userId) {
 
   return rows[0];
 }
+async function getUserByName(userName) {
+  const query = "SELECT * FROM users WHERE name ILIKE $1";
+  const values = [`%${userName}%`];
 
+  const { rows } = await pool.query(query, values);
+  return rows[0];
+}
 module.exports = {
   getUsers,
   getUserById,
   insertUser,
+  getUserByName,
 };
