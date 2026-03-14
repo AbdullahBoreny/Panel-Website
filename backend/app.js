@@ -1,15 +1,12 @@
-
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const rateLimit = require("express-rate-limit");
 const path = require("node:path");
-const PORT = process.env.PORT || 8080;
-
 
 const authorRouter = require("./routes/authorRouter");
 const bookRouter = require("./routes/bookRouter");
-const indexRouter = require("./routes/indexRouter");
+const userRouter = require("./routes/userRouter");
 const birds = require("./routes/birds");
 app.use(cors()); // allow React to call backend
 app.use(express.json());
@@ -20,7 +17,7 @@ app.set("view engine", "ejs");
 app.use("/api/birds", birds);
 app.use("/api/authors", authorRouter);
 app.use("/api/books", bookRouter);
-app.use("/api", indexRouter);
+app.use("/api", userRouter);
 
 const links = [
   { href: "/", text: "Home" },
@@ -32,7 +29,13 @@ const users = ["Rose", "Cake", "Biff"];
 app.get("/", (req, res) => {
   res.render("index", { links: links, users: users });
 });
-
-app.listen(PORT, () => {
-  console.log(`Backend running on http://localhost:${PORT}`);
+// Error handling middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    message: err.message || "Internal Server Error",
+    stack: process.env.NODE_ENV === "production" ? null : err.stack,
+  });
 });
+
+module.exports = app;
