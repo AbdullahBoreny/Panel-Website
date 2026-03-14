@@ -8,10 +8,19 @@ async function getBooks() {
 async function getBookById(bookId) {
   const query = "SELECT * FROM books WHERE id = $1";
   const values = [bookId];
-  console.log(values);
 
   const { rows } = await pool.query(query, values);
 
   return rows[0];
 }
-module.exports = { getBookById, getBooks };
+
+async function insertBook(book) {
+  const query = "INSERT INTO books (title) VALUES ($1) RETURNING *";
+  const values = [book.title];
+
+  const { rows } = await pool.query(query, values);
+
+  return rows[0];
+}
+
+module.exports = { getBookById, getBooks, insertBook };
