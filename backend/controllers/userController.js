@@ -21,7 +21,7 @@ async function getUsers(req, res) {
   }
 
   const users = await userRepo.getAll();
-
+  
   res.json(users);
 }
 

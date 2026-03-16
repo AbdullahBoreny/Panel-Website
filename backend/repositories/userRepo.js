@@ -20,7 +20,7 @@ async function create(newUser) {
   if (!user) {
     throw new Error("user is required to create a user");
   }
-  res.json(user);
+  return user;
 }
 async function getUserByName(params) {
   const result = await db.getUserByName(params);
