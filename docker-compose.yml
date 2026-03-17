@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   db:
@@ -15,6 +14,8 @@ services:
 
   backend:
     build: ./backend
+    image: aboreny/panel-backend:latest
+    
     env_file:
       - .env
     ports:
@@ -24,6 +25,7 @@ services:
 
   frontend:
     build: ./frontend
+    image: aboreny/panel-frontend:latest
     ports:
       - "3000:3000"
     stdin_open: true
