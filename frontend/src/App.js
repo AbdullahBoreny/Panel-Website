@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import "./Form.css";
 import "./List.css";
-
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 function App() {
   // Form state
   const [name, setName] = useState("");
@@ -17,9 +17,13 @@ function App() {
   const [books, setBooks] = useState([]);
 
   const fetchAuthors = () =>
-    fetch("/api/authors").then(res => res.json()).then(setAuthors);
+    fetch(`${API_BASE_URL}/api/authors`)
+      .then((res) => res.json())
+      .then(setAuthors);
   const fetchBooks = () =>
-    fetch("/api/books").then(res => res.json()).then(setBooks);
+    fetch(`${API_BASE_URL}/api/books`)
+      .then((res) => res.json())
+      .then(setBooks);
 
   useEffect(() => {
     fetchAuthors();
@@ -28,7 +32,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("/api/users", {
+    const res = await fetch(`${API_BASE_URL}/api/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email }),
@@ -39,7 +43,7 @@ function App() {
 
   const handleAddAuthor = async (e) => {
     e.preventDefault();
-    await fetch("/api/authors", {
+    await fetch(`${API_BASE_URL}/api/authors`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: authorName }),
@@ -50,7 +54,7 @@ function App() {
 
   const handleAddBook = async (e) => {
     e.preventDefault();
-    await fetch("/api/books", {
+    await fetch(`${API_BASE_URL}/api/books`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: bookTitle }),
@@ -69,19 +73,19 @@ function App() {
           <input
             placeholder="Name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
           <input
             placeholder="Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <button type="submit">Submit</button>
         </form>
 
         {response && (
           <div className="response">
-          <div>thanks for submitting</div>
+            <div>thanks for submitting</div>
           </div>
         )}
       </section>
@@ -89,13 +93,15 @@ function App() {
       <section className="list-section">
         <h2>Authors</h2>
         <ul className="list">
-          {authors.map(a => <li key={a.id}>{a.name}</li>)}
+          {authors.map((a) => (
+            <li key={a.id}>{a.name}</li>
+          ))}
         </ul>
         <form onSubmit={handleAddAuthor} className="form">
           <input
             placeholder="New Author"
             value={authorName}
-            onChange={e => setAuthorName(e.target.value)}
+            onChange={(e) => setAuthorName(e.target.value)}
           />
           <button type="submit">Add Author</button>
         </form>
@@ -104,13 +110,15 @@ function App() {
       <section className="list-section">
         <h2>Books</h2>
         <ul className="list">
-          {books.map(b => <li key={b.id}>{b.title}</li>)}
+          {books.map((b) => (
+            <li key={b.id}>{b.title}</li>
+          ))}
         </ul>
         <form onSubmit={handleAddBook} className="form">
           <input
             placeholder="New Book"
             value={bookTitle}
-            onChange={e => setBookTitle(e.target.value)}
+            onChange={(e) => setBookTitle(e.target.value)}
           />
           <button type="submit">Add Book</button>
         </form>
