@@ -8,7 +8,11 @@ const authorRouter = require("./routes/authorRouter");
 const bookRouter = require("./routes/bookRouter");
 const userRouter = require("./routes/userRouter");
 const birds = require("./routes/birds");
-app.use(cors()); // allow React to call backend
+app.use(
+  cors({
+    origin: "https://lighthearted-syrniki-ee5b48.netlify.app", // NO trailing slash here!
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("views", path.join(__dirname, "views"));
